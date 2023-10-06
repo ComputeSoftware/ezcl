@@ -1,0 +1,27 @@
+kit.git-config.edn
+.DS_Store
+.nrepl-port
+hs_err_pid*.log
+.cpcache/
+target
+log/
+.shadow-cljs/
+node_modules/
+modules/
+local
+
+# IntelliJ
+*.iml
+.idea/
+
+# clj-kondo
+.clj-kondo/.cache/
+.calva/output-window/
+.lsp/.cache/
+
+resources/public/css
+ssh_keys
+
+# js compilation target dir
+dist
+dist-bin

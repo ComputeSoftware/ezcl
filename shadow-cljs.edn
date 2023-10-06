@@ -1,0 +1,9 @@
+{:deps   {:aliases [:cljs]}
+ :builds {:app {:target          :browser
+                :output-dir      "target/classes/cljsbuild/public/js"
+                :asset-path      "/js"
+                :closure-defines {cs.ezcl.ui/clerk-publishable-key "pk_test_bWFqb3ItcmVwdGlsZS0xNC5jbGVyay5hY2NvdW50cy5kZXYk"}
+                :modules         {:main {:entries [cs.ezcl.ui]
+                                         :init-fn cs.ezcl.ui/init}}
+                :devtools        {:preloads  [preload devtools.preload]
+                                  :watch-dir "public"}}}}

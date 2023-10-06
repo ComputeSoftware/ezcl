@@ -1,0 +1,57 @@
+{:system/env
+ #profile {:dev  :dev
+           :test :test
+           :prod :prod}
+
+ :authentication/jwks-data
+ {:jwks-url "https://major-reptile-14.clerk.accounts.dev/.well-known/jwks.json"
+  :kid      "ins_2UqXTSF6MjrtZJYT5w88sQhnmCU"}
+
+ :server/http
+ {:port    #long #or [#env HTTP_PORT 3000]
+  :host    #or [#env HTTP_HOST "0.0.0.0"]
+  :handler #ig/ref :handler/ring}
+
+ ;;=============================================================================
+ ;; App Router
+ :handler/ring
+ {:router               #ig/ref :router/core
+  :site-defaults-config {:params    {:urlencoded true
+                                     :multipart  true
+                                     :nested     true
+                                     :keywordize true}
+                         :cookies   true
+                         :session   {:flash        true
+                                     :cookie-name  "ezcl"
+                                     :cookie-attrs {:max-age   86400
+                                                    :http-only true
+                                                    :same-site :strict}}
+                         :security  {:anti-forgery         false
+                                     :xss-protection       {:enable? true,
+                                                            :mode    :block}
+                                     :frame-options        :sameorigin
+                                     :content-type-options :nosniff}
+                         :static    {:resources "public"}
+                         :responses {:not-modified-responses true
+                                     :absolute-redirects     true
+                                     :content-types          true
+                                     :default-charset        "utf-8"}}
+
+  :postgres/datasource  #ig/ref :postgres/datasource}
+
+ :router/routes
+ {:routes #ig/refset :reitit/routes}
+
+ :router/core
+ {:routes #ig/ref :router/routes}
+
+ :reitit.routes/api
+ {:base-path                "/api"
+  :env                      #ig/ref :system/env
+  :authentication/jwks-data #ig/ref :authentication/jwks-data}
+
+ :postgres/datasource {:postgres/db-spec {:dbtype   "postgresql"
+                                          :dbname   "ezcl"
+                                          :user     "postgres"
+                                          :host     #or [#env POSTGRES_HOST "127.0.0.1"]
+                                          :password #env POSTGRES_PASSWORD}}}
